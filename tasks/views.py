@@ -54,3 +54,64 @@ def task_done(request, pk):
    except Task.DoesNotExist:
       return Response(status=status.HTTP_404_NOT_FOUND)
    
+@api_view(["PUT"])
+def updateOrder(request):
+   order = 0
+   todo_list = request.data.get("todoList", [])
+   working_list = request.data.get("workingList", [])
+   done_list = request.data.get("doneList", [])
+
+   for task in todo_list:
+      try:
+         oldTask = Task.objects.get(id=task["id"])
+
+         if oldTask.index != task["index"] or oldTask.status != task["status"]:
+            task["status"] = "todo"
+            task["index"] = order
+            serializer = TaskSerializer(oldTask, data=task)
+            if serializer.is_valid():
+               serializer.save()
+            else:
+               print("tarefa não encontrada")
+               continue
+         order += 1
+      except Task.DoesNotExist:
+         continue
+
+   order = 0
+   for task in working_list:
+      try:
+         oldTask = Task.objects.get(id=task["id"])
+
+         if oldTask.index != task["index"] or oldTask.status != task["status"]:
+            task["status"] = "working"
+            task["index"] = order
+            serializer = TaskSerializer(oldTask, data=task)
+            if serializer.is_valid():
+               serializer.save()
+            else:
+               print("tarefa não encontrada")
+               continue
+         order += 1
+      except Task.DoesNotExist:
+         continue
+
+   order = 0
+   for task in done_list:
+      try:
+         oldTask = Task.objects.get(id=task["id"])
+
+         if oldTask.index != task["index"] or oldTask.status != task["status"]:
+            task["status"] = "done"
+            task["index"] = order
+            serializer = TaskSerializer(oldTask, data=task)
+            if serializer.is_valid():
+               serializer.save()
+            else:
+               print("tarefa não encontrada")
+               continue
+         order += 1
+      except Task.DoesNotExist:
+         continue
+
+   return Response(status=status.HTTP_202_ACCEPTED)

@@ -17,9 +17,9 @@ class Task(models.Model):
     priority = models.CharField(max_length=6, choices=DIFFICULTY, blank=True, default="low")
     complexity = models.CharField(max_length=6, choices=DIFFICULTY, blank=True, default="low")
     summary = models.CharField(max_length=500, blank=True, default="")
+    index = models.IntegerField(default=0)
 
 
     def ___str___(self):
         return self
     
-
