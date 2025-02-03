@@ -13,7 +13,6 @@ def get_tasks(request):
 # ChatGPT me sugeriu instalar o CORS após eu comentarr sobre o erro de requisição que eu recebis
 @api_view(["POST"])
 def create_task(request):
-  print("Requisição de criação do objeto:", request)
   serializer = TaskSerializer(data=request.data)
   if serializer.is_valid():
     serializer.save()
